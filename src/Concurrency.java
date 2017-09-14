@@ -3,6 +3,8 @@ import java.util.concurrent.*;
 
 public class Concurrency implements Callable<Integer> {
 
+    volatile String message;
+
     @Override
     public Integer call() throws Exception {
         Thread.sleep(1000);
@@ -25,5 +27,9 @@ public class Concurrency implements Callable<Integer> {
             }
         }
         executorService.shutdown();
+    }
+
+    private void test() {
+
     }
 }
