@@ -1,45 +1,32 @@
 public class MedianOfTwoSortedArrays {
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int[] a, b;
-        a = nums1.length >= nums2.length ? nums2 : nums1;
-        b = nums1.length >= nums2.length ? nums1 : nums2;
-        int imin = -1;
-        int imax = a.length - 1;
-        int i, j, max_of_left, min_of_right;
-        while (imin <= imax) {
-            i = (imin + imax) / 2;
-            j = (a.length + b.length + 1) / 2 - i - 2;
-            System.out.println("i = " + i + " j = " + j);
-            if (i < a.length - 1 && b[j] > a[i+1]) {
-                imin = i + 1;
-            } else if (i > -1 && a[i] > b[j+1]) {
-                imax = i - 1;
-            } else {
-                if (i == -1) max_of_left = b[j];
-                else if (j == -1) max_of_left = a[i];
-                else max_of_left = Math.max(a[i], b[j]);
-                if ((a.length + b.length) % 2 == 1)
-                    return max_of_left;
+    public static double median(int[] nums1, int[] nums2) {
+        int n = nums1.length, m = nums2.length;
+        if (n > m) return median(nums2, nums1);
+        int iMin = 0, iMax = n;
 
-                if (i == a.length - 1) min_of_right = b[j+1];
-                else if (j == b.length - 1) min_of_right = a[i+1];
-                else min_of_right = Math.min(a[i+1], b[j+1]);
-                return (max_of_left + min_of_right) / 2.0;
+        while (iMin <= iMax) {
+            int p1 = (iMin + iMax) / 2;
+            int p2 = (n + m) / 2 - p1;
+            int left1 = p1 - 1 < 0 ? Integer.MIN_VALUE : nums1[p1 - 1];
+            int right1 = p1 >= n ? Integer.MAX_VALUE : nums1[p1];
+            int left2 = p2 - 1 < 0 ? Integer.MIN_VALUE : nums2[p2 - 1];
+            int right2 = p2 >= m ? Integer.MAX_VALUE : nums2[p2];
+
+            if (left1 > right2) {
+                iMax = p1 - 1;
+            } else if (left2 > right1) {
+                iMin = p1 + 1;
+            } else {
+                if ((n + m) % 2 == 1) return Math.min(right1, right2);
+                else return (Math.max(left1, left2) + Math.min(right1, right2)) / 2.0;
             }
         }
+
         return -1;
     }
 
-    public static final void main (String[] args) {
-        MedianOfTwoSortedArrays c = new MedianOfTwoSortedArrays();
-        int[] a = new int[] {1, 2, 3};
-        int[] b = new int[] {5, 6, 7, 8, 9};
-        int[] e = new int[] {7, 8, 9};
-        int[] f = new int[] {1, 2, 3, 4, 5};
-        int[] k = new int[] {1, 2};
-        int[] j = new int[] {3, 4};
-        System.out.println(c.findMedianSortedArrays(a, b));
-        System.out.println(c.findMedianSortedArrays(e, f));
-        System.out.println(c.findMedianSortedArrays(k, j));
+    public static void main(String[] args) {
+        int[] num1 = new int[]{1,2}, num2 = new int[]{3,4};
+        System.out.println(median(num1, num2));
     }
 }
