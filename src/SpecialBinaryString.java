@@ -1,5 +1,4 @@
 import com.google.gson.Gson;
-import netscape.javascript.JSObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
