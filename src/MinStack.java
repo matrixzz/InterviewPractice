@@ -1,30 +1,46 @@
-import java.util.Arrays;
+import java.util.Stack;
 
 public class MinStack {
-    int total_size, size;
-    int[] data;
+    private Stack<Integer> minStack;
+    private Stack<Integer> stack;
 
+    /** initialize your data structure here. */
     public MinStack() {
-        this.total_size = 256;
-        this.data = new int[total_size];
-        this.size = 0;
+        minStack = new Stack<>();
+        stack = new Stack<>();
     }
 
-    public void push(int number) {
-        if (++size > total_size) {
-            total_size *= 2;
-            this.data = Arrays.copyOf(data, total_size);
+    public void push(int x) {
+        stack.push(x);
+        if (minStack.size() == 0 || x < minStack.peek()) {
+            minStack.push(x);
+        } else {
+            minStack.push(minStack.peek());
         }
     }
 
-    public int pop() {
-        // write your code here
-        return 0;
+    public void pop() {
+        stack.pop();
+        minStack.pop();
     }
 
-    public int min() {
-        // write your code here
-        return 0;
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minStack.peek();
+    }
+
+    public static void main(String[] args) {
+        MinStack minStack = new MinStack();
+        minStack.push(-2);
+        minStack.push(0);
+        minStack.push(-3);
+        System.out.println(minStack.getMin());
+        minStack.pop();
+        System.out.println(minStack.top());
+        System.out.println(minStack.getMin());
     }
 }
 
