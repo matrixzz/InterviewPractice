@@ -1,5 +1,4 @@
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -14,16 +13,16 @@ public class RateLimiter2 {
     }
 
     public boolean isAllowed(long timestamp) {
-        long now = timestamp;
-        tokens += (int) ((now - timestamp) * tokensPerSecond / 1000);
+        tokens += (int) ((timestamp - this.timestamp) * tokensPerSecond / 1000);
         if (tokens > capacity) tokens = capacity;
         if (tokens < 1) return false;
         tokens--;
+        this.timestamp = timestamp;
         return true;
     }
 
     public static void main(String[] args) throws InterruptedException {
-        RateLimiter2 rl = new RateLimiter2(250, TimeUnit.MINUTES);
+        RateLimiter2 rl = new RateLimiter2(2, TimeUnit.SECONDS);
         Thread.sleep(1000L);
         for (int i = 0; i < 6; i++) {
             long timestamp = System.currentTimeMillis();
